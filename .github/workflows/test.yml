@@ -40,6 +40,8 @@ jobs:
         id: build
 
       - name: Run Forge tests
+        env:
+          INFURA_URL_FOR_MAINNET: ${{ secrets.INFURA_URL_FOR_MAINNET }}
         run: |
-          forge test -vvv --fork-url ${{ secret.INFURA_URL_FOR_MAINNET }}
+          forge test -vvv --fork-url "$INFURA_URL_FOR_MAINNET"
         id: test
