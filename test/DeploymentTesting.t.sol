@@ -15,8 +15,7 @@ contract DeploymentTests is Test {
 
     IUniswapV2Router02 router = IUniswapV2Router02(0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D);
 
-    function setUp() public {
-    }
+    function setUp() public {}
 
     function test_uniswapFactory() public view {
         assert(factory.feeToSetter() != address(0));
