@@ -5,7 +5,9 @@ import {Test, console2} from "forge-std/Test.sol";
 import {IERC20} from "../src/interfaces/IERC20.sol";
 import {IUniswapV2Router02} from "../src/interfaces/IUniswapV2Router02.sol";
 import {IUniswapV2Pair} from "../src/interfaces/IUniswapV2Pair.sol";
-import {DAI, WETH, UNISWAP_V2_ROUTER_02, UNISWAP_V2_PAIR_DAI_WETH, SUSHISWAP_V2_PAIR_DAI_WETH} from "../src/Constants.sol";
+import {
+    DAI, WETH, UNISWAP_V2_ROUTER_02, UNISWAP_V2_PAIR_DAI_WETH, SUSHISWAP_V2_PAIR_DAI_WETH
+} from "../src/Constants.sol";
 import {TestFlashSwap} from "../src/FlashSwap.sol";
 
 contract FlashSwapTest is Test {
@@ -46,7 +48,7 @@ contract FlashSwapTest is Test {
     }
 
     function logPoolState(IUniswapV2Pair pair) public view {
-        console2.log(address(pair) == address(uniswapPair) ? "Uniswap pool": "Sushiswap pool");
+        console2.log(address(pair) == address(uniswapPair) ? "Uniswap pool" : "Sushiswap pool");
         (uint112 reserveDAI, uint112 reserveWETH,) = pair.getReserves();
         console2.log("DAI in pool: %s", reserveDAI / 1e18);
         console2.log("WETH in pool: %s", reserveWETH / 1e18);
@@ -70,7 +72,6 @@ contract FlashSwapTest is Test {
         // Reduce WETH price to create arbitrage opportunity
         //executeWethToDaiSwap();
 
-        
         vm.prank(user);
         flashSwap.flashSwap(DAI, 7e6 * 1e18);
         logPoolState(uniswapPair);

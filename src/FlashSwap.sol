@@ -38,7 +38,8 @@ contract TestFlashSwap {
         console2.log("Contract balance before borrowing:", initialBalance);
 
         // Determine which token to borrow
-        (uint256 amount0, uint256 amount1) = token == token0 ? (params.amountIn, uint256(0)) : (uint256(0), params.amountIn);
+        (uint256 amount0, uint256 amount1) =
+            token == token0 ? (params.amountIn, uint256(0)) : (uint256(0), params.amountIn);
 
         // Encode data to pass along with the swap
         bytes memory data = abi.encode(token, msg.sender, params);
@@ -60,17 +61,18 @@ contract TestFlashSwap {
 
         // Determine the amount borrowed
         uint256 borrowedAmount = token == token0 ? amount0 : amount1;
-        
 
         address[] memory path = new address[](2);
         path[0] = DAI;
         path[1] = WETH;
 
         IERC20(token).approve(address(sushiswapRouter), type(uint256).max);
-        uint256[] memory amounts = sushiswapRouter.swapExactTokensForTokens(borrowedAmount, 0, path, address(this), block.timestamp);
-        
+        uint256[] memory amounts =
+            sushiswapRouter.swapExactTokensForTokens(borrowedAmount, 0, path, address(this), block.timestamp);
+
         console2.log("amounts: %s", amounts[1]);
         // Calculate the 0.3% fee required to repay the borrowed amount
+
         uint256 fee = ((borrowedAmount * 3) / 997) + 1;
         uint256 amountToRepay = borrowedAmount + fee;
         console2.log("repay amount: %s", amountToRepay);
@@ -81,7 +83,7 @@ contract TestFlashSwap {
 
         // Repay the loan plus fee
         IERC20(token).transfer(address(uniswapPair), amountToRepay);
-        
+
         // Log final balance to confirm loan repayment
         uint256 finalBalance = IERC20(token).balanceOf(address(this)) / 1e18;
         console2.log("Contract balance after repayment:", finalBalance);
